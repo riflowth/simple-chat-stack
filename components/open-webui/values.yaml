@@ -1,0 +1,25 @@
+# https://github.com/open-webui/helm-charts/tree/59b88242462c097ba09b6549f9e1128064b33563/charts/open-webui
+
+ollama:
+  enabled: false
+pipelines:
+  enabled: false
+
+ingress:
+  enabled: true
+  class: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  host: ai.vectier.com
+  tls: true
+
+persistence:
+  storageClass: local-path
+
+openaiBaseApiUrl: http://litellm.litellm.svc.cluster.local:4000
+
+extraEnvVars:
+  - name: OPENAI_API_KEY
+    value: ref+k8s://v1/Secret/litellm/litellm-masterkey/masterkey
+
+databaseUrl: ref+k8s://v1/Secret/open-webui/openwebui-db-cluster-app/uri

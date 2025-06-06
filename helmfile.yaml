@@ -1,0 +1,95 @@
+templates:
+  cnpg: &cnpg
+    version: 0.3.1
+    chart: cnpg/cluster
+    labels:
+      install-stage: db
+    values:
+      - ./components/cnpg/db/values.yaml
+    valuesTemplate:
+      - cluster:
+          initdb:
+            database: '{{ .Release.Name | replace "-db" "" }}'
+            owner: '{{ .Release.Name | replace "-db" "" }}'
+    needs:
+      - cnpg-system/cnpg
+
+releases:
+  - name: cert-manager
+    version: 1.17.2
+    namespace: cert-manager
+    labels:
+      install-stage: pre
+    chart: jetstack/cert-manager
+    values:
+      - ./components/cert-manager/values.yaml
+    wait: true
+    hooks:
+      - events: [postsync]
+        showlogs: true
+        command: kubectl
+        args:
+          - apply
+          - -f
+          - ./components/cert-manager/complements.yaml
+
+  - name: nginx
+    version: 4.12.2
+    namespace: kube-system
+    labels:
+      install-stage: pre
+    chart: ingress-nginx/ingress-nginx
+    wait: true
+
+  - name: cnpg
+    version: 0.24.0
+    namespace: cnpg-system
+    labels:
+      install-stage: pre
+    chart: cnpg/cloudnative-pg
+    values:
+      - ./components/cnpg/operator/values.yaml
+    wait: true
+
+  - name: openwebui-db
+    namespace: open-webui
+    wait: true
+    <<: *cnpg
+
+  - name: open-webui
+    version: 6.19.0
+    namespace: open-webui
+    labels:
+      install-stage: app
+    chart: open-webui/open-webui
+    values:
+      - ./components/open-webui/values.yaml
+    wait: true
+    needs:
+      - litellm/litellm
+
+  - name: litellm-db
+    namespace: litellm
+    wait: true
+    <<: *cnpg
+
+  - name: litellm
+    version: 0.1.694
+    namespace: litellm
+    labels:
+      install-stage: proxy
+    chart: litellm/litellm-helm
+    values:
+      - ./components/litellm/values.yaml
+    wait: true
+
+repositories:
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - name: open-webui
+    url: https://helm.openwebui.com
+  - name: litellm
+    url: ghcr.io/berriai
+    oci: true

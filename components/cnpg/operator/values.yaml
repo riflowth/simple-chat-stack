@@ -1,0 +1,4 @@
+# https://github.com/cloudnative-pg/charts/tree/e619cdde7b65fe069242bb60e3102974f189ce3f/charts/cloudnative-pg
+
+monitoring:
+  podMonitorEnabled: false

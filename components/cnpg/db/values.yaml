@@ -1,0 +1,9 @@
+# https://github.com/cloudnative-pg/charts/tree/e619cdde7b65fe069242bb60e3102974f189ce3f/charts/cluster
+
+cluster:
+  instances: 1
+  storage:
+    size: 20Gi
+    storageClass: local-path
+  monitoring:
+    enabled: false

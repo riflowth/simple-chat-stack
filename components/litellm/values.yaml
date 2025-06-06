@@ -1,0 +1,31 @@
+# https://github.com/BerriAI/litellm/tree/e74ff23b458dd153a442307bf118e34ff165ef64/deploy/charts/litellm-helm
+
+proxy_config:
+  model_list:
+    - model_name: gpt-4o-mini
+      litellm_params:
+        model: openai/gpt-4o-mini
+        api_key: ref+envsubst://$OPENAI_API_KEY
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: llm.vectier.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: litellm-tls
+      hosts:
+        - llm.vectier.com
+
+db:
+  useExisting: false
+  deployStandalone: false
+
+extraEnvVars:
+  - name: DATABASE_URL
+    value: ref+k8s://v1/Secret/litellm/litellm-db-cluster-app/uri
