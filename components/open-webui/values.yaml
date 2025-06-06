@@ -1,5 +1,7 @@
 # https://github.com/open-webui/helm-charts/tree/59b88242462c097ba09b6549f9e1128064b33563/charts/open-webui
 
+replicaCount: ref+envsubst://$OPEN_WEBUI_REPLICA
+
 ollama:
   enabled: false
 pipelines:
@@ -10,6 +12,8 @@ ingress:
   class: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/session-cookie-name: token
   host: ref+envsubst://$OPEN_WEBUI_DOMAIN
   tls: true
 

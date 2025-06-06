@@ -1,5 +1,7 @@
 # https://github.com/BerriAI/litellm/tree/e74ff23b458dd153a442307bf118e34ff165ef64/deploy/charts/litellm-helm
 
+replicaCount: ref+envsubst://$LITELLM_REPLICA
+
 proxy_config:
   model_list:
     - model_name: gpt-4o-mini
