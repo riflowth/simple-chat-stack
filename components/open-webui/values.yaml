@@ -10,7 +10,7 @@ ingress:
   class: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-  host: ai.vectier.com
+  host: ref+envsubst://$OPEN_WEBUI_DOMAIN
   tls: true
 
 persistence:

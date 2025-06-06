@@ -13,14 +13,14 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
   hosts:
-    - host: llm.vectier.com
+    - host: ref+envsubst://$LITELLM_DOMAIN
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
     - secretName: litellm-tls
       hosts:
-        - llm.vectier.com
+        - ref+envsubst://$LITELLM_DOMAIN
 
 db:
   useExisting: false

@@ -4,7 +4,7 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    email: riflowth@gmail.com
+    email: ref+envsubst://$LETSENCRYPT_EMAIL
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name:  letsencrypt-prod-key
