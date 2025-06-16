@@ -15,6 +15,16 @@ templates:
       - cnpg-system/cnpg
 
 releases:
+  - name: prometheus
+    version: 74.2.1
+    namespace: prometheus
+    labels:
+      install-stage: pre
+    chart: prometheus-community/kube-prometheus-stack
+    values:
+      - ./components/prometheus/values.yaml
+    wait: true
+
   - name: cert-manager
     version: 1.17.2
     namespace: cert-manager
@@ -57,7 +67,7 @@ releases:
     <<: *cnpg
 
   - name: open-webui
-    version: 6.19.0
+    version: 6.20.0
     namespace: open-webui
     labels:
       install-stage: app
@@ -93,3 +103,5 @@ repositories:
   - name: litellm
     url: ghcr.io/berriai
     oci: true
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts

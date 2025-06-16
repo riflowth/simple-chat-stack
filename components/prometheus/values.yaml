@@ -1,0 +1,36 @@
+# https://github.com/prometheus-community/helm-charts/blob/d028350e08afa20c2b7e3903972bc013ca4bafb6/charts/kube-prometheus-stack/values.yaml
+
+defaultRules:
+  rules:
+    alertmanager: false
+    windows: false
+
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ['ReadWriteOnce']
+          resources:
+            requests:
+              storage: 10Gi
+        selector: {}
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    scrapeConfigSelectorNilUsesHelmValues: false
+
+grafana:
+  enabled: false
+
+alertmanager:
+  enabled: false
+
+nodeExporter:
+  operatingSystems:
+    aix:
+      enabled: false
+    darwin:
+      enabled: false
