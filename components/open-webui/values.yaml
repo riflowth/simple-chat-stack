@@ -1,4 +1,4 @@
-# https://github.com/open-webui/helm-charts/tree/59b88242462c097ba09b6549f9e1128064b33563/charts/open-webui
+# https://github.com/open-webui/helm-charts/tree/b33c1bda00c56d2fac5b82cce238a57c81677f48/charts/open-webui
 
 replicaCount: ref+envsubst://$OPEN_WEBUI_REPLICA
 
@@ -24,6 +24,6 @@ openaiBaseApiUrl: http://litellm.litellm.svc.cluster.local:4000
 
 extraEnvVars:
   - name: OPENAI_API_KEY
-    value: ref+k8s://v1/Secret/litellm/litellm-masterkey/masterkey
+    value: ref+envsubst://$LITELLM_MASTERKEY
 
 databaseUrl: ref+k8s://v1/Secret/open-webui/openwebui-db-cluster-app/uri
