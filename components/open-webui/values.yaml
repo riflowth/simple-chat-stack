@@ -13,7 +13,8 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/affinity: cookie
-    nginx.ingress.kubernetes.io/session-cookie-name: token
+    nginx.ingress.kubernetes.io/session-cookie-name: pod
+
   host: ref+envsubst://$OPEN_WEBUI_DOMAIN
   tls: true
 
