@@ -9,6 +9,9 @@ proxy_config:
       litellm_params:
         model: openai/gpt-4o-mini
         api_key: ref+envsubst://$OPENAI_API_KEY
+  general_settings:
+    store_model_in_db: true
+    store_prompts_in_spend_logs: true
 
 ingress:
   enabled: true
