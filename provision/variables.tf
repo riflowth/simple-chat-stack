@@ -1,4 +1,4 @@
-# For slugs: https://slugs.do-api.dev/
+# For DigitalOcean slugs: https://slugs.do-api.dev/
 
 variable "do_token" {
   type        = string
@@ -40,4 +40,24 @@ variable "worker_size" {
 variable "worker_count" {
   type        = number
   description = "Number of Worker node"
+}
+
+variable "cf_token" {
+  type        = string
+  description = "Cloudflare API token"
+}
+
+variable "cf_zone_id" {
+  type        = string
+  description = "Cloudflare Zone ID"
+}
+
+variable "dns_records" {
+  type  = list(object({
+    type    = string
+    name    = string
+    proxied = bool
+    ttl     = number
+  }))
+  description = "List of DNS records"
 }

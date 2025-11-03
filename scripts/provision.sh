@@ -1,5 +1,6 @@
 set -e
 
+terraform -chdir=provision init
 terraform -chdir=provision apply -auto-approve
 
 master_ip=$(terraform -chdir=provision output -json | jq -r '.cluster_summary.value.masters[0].public_ip')

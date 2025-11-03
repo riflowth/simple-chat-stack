@@ -1,3 +1,13 @@
+resource "cloudflare_dns_record" "records" {
+  count   = length(var.dns_records)
+  zone_id = var.cf_zone_id
+  type    = var.dns_records[count.index].type
+  name    = var.dns_records[count.index].name
+  content = digitalocean_droplet.master_init.ipv4_address
+  proxied = var.dns_records[count.index].proxied
+  ttl     = var.dns_records[count.index].ttl
+}
+
 resource "digitalocean_vpc" "k3s_vpc" {
   name      = "k3s-vpc"
   region    = var.region
