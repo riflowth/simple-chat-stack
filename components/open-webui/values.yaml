@@ -1,4 +1,4 @@
-# https://github.com/open-webui/helm-charts/tree/b33c1bda00c56d2fac5b82cce238a57c81677f48/charts/open-webui
+# https://github.com/open-webui/helm-charts/tree/91150bd0a53b887bbd5d1b5ff06bc334e3508c32/charts/open-webui
 
 replicaCount: ref+envsubst://$OPEN_WEBUI_REPLICA
 
@@ -14,12 +14,11 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/affinity: cookie
     nginx.ingress.kubernetes.io/session-cookie-name: pod
-
   host: ref+envsubst://$OPEN_WEBUI_DOMAIN
   tls: true
 
 persistence:
-  storageClass: local-path
+  enabled: false # Use database instead
 
 openaiBaseApiUrl: http://litellm.litellm.svc.cluster.local:4000
 
@@ -28,3 +27,6 @@ extraEnvVars:
     value: ref+envsubst://$LITELLM_MASTERKEY
 
 databaseUrl: ref+k8s://v1/Secret/open-webui/openwebui-db-cluster-app/uri
+
+nodeSelector:
+  node-role.kubernetes.io/worker: "true"

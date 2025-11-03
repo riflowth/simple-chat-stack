@@ -1,4 +1,4 @@
-# https://github.com/prometheus-community/helm-charts/blob/d028350e08afa20c2b7e3903972bc013ca4bafb6/charts/kube-prometheus-stack/values.yaml
+# https://github.com/prometheus-community/helm-charts/blob/c13ac377f1f9ac3efa8e50251f15cc6d2a5c146b/charts/kube-prometheus-stack/values.yaml
 
 defaultRules:
   rules:
@@ -21,6 +21,8 @@ prometheus:
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
     scrapeConfigSelectorNilUsesHelmValues: false
+  nodeSelector:
+    node-role.kubernetes.io/master: "true"
 
 grafana:
   enabled: false

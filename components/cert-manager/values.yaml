@@ -1,4 +1,4 @@
-# https://github.com/cert-manager/cert-manager/tree/34832b2b46fe980b576573925f3d0f2be15b0f86/deploy/charts/cert-manager
+# https://github.com/cert-manager/cert-manager/tree/5116b46006a7310783e4c4077216cd367accaa6b/deploy/charts/cert-manager
 
 crds:
   enabled: true

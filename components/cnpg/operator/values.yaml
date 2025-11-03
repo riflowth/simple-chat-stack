@@ -1,4 +1,7 @@
-# https://github.com/cloudnative-pg/charts/tree/e619cdde7b65fe069242bb60e3102974f189ce3f/charts/cloudnative-pg
+# https://github.com/cloudnative-pg/charts/tree/cb3d056272410532401d7317f236f01e67fe8d41/charts/cloudnative-pg
 
 monitoring:
   podMonitorEnabled: false
+
+nodeSelector:
+  node-role.kubernetes.io/master: "true"
