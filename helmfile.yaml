@@ -40,11 +40,16 @@ releases:
     hooks:
       - events: [postsync]
         showlogs: true
-        command: kubectl
+        command: sh
         args:
-          - apply
-          - -f
-          - ./components/cert-manager/complements.yaml
+          - -c
+          - "envsubst < ./components/cert-manager/complements.yaml | kubectl apply -f -"
+      - events: [postuninstall]
+        showlogs: true
+        command: sh
+        args:
+          - -c
+          - "kubectl delete -f ./components/cert-manager/complements.yaml"
 
   - name: nginx
     version: 4.13.3

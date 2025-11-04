@@ -14,9 +14,24 @@ resource "digitalocean_droplet" "master_init" {
   monitoring  = true
   tags        = [digitalocean_tag.master.id]
 
-  user_data   = templatefile("${path.module}/user_data/setup-k3s-master-init.sh", {
-    k3s_token = random_password.k3s_token.result
-  })
+  connection {
+    host = self.ipv4_address
+  }
+
+  provisioner "remote-exec" {
+    # Setup K3s
+    inline = [
+      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_token.result} sh -s - --disable traefik --flannel-iface eth1 --tls-san ${self.ipv4_address}",
+    ]
+  }
+
+  provisioner "local-exec" {
+    # Create kube config file to communicate with the cluster
+    command = <<-EOT
+      scp root@${self.ipv4_address}:/etc/rancher/k3s/k3s.yaml ./../kubeconfig
+      sed -i "" "s/127.0.0.1/${self.ipv4_address}/g" ./../kubeconfig
+    EOT
+  }
 }
 
 # TODO: support multiple master node (need lb/ccm)
