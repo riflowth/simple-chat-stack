@@ -10,6 +10,11 @@ variable "ssh_key_fingerprints" {
   description = "SSH key fingerprints"
 }
 
+variable "ssh_private_key_path" {
+  type        = string
+  description = "Path to SSH private key"
+}
+
 variable "image" {
   type        = string
   description = "DigitalOcean Droplet image"

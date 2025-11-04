@@ -15,7 +15,10 @@ resource "digitalocean_droplet" "master_init" {
   tags        = [digitalocean_tag.master.id]
 
   connection {
-    host = self.ipv4_address
+    type        = "ssh"
+    user        = "root"
+    host        = self.ipv4_address
+    private_key = file(var.ssh_private_key_path)
   }
 
   provisioner "remote-exec" {
