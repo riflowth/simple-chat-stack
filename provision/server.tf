@@ -65,8 +65,21 @@ resource "digitalocean_droplet" "worker" {
   monitoring  = true
   tags        = [digitalocean_tag.worker.id]
 
-  user_data   = templatefile("${path.module}/user_data/setup-k3s-worker.sh", {
-    k3s_token     = random_password.k3s_token.result
-    k3s_master_ip = digitalocean_droplet.master_init.ipv4_address_private
-  })
+  connection {
+    type        = "ssh"
+    user        = "root"
+    host        = self.ipv4_address
+    private_key = file(var.ssh_private_key_path)
+  }
+
+  provisioner "remote-exec" {
+    # Setup K3s
+    inline = [
+      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_token.result} K3S_URL=https://${digitalocean_droplet.master_init.ipv4_address}:6443 sh -s - --flannel-iface eth1",
+    ]
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl label ${self.name} node-role.kubernetes.io/worker=true"
+  }
 }
