@@ -25,6 +25,8 @@ openaiBaseApiUrl: http://litellm.litellm.svc.cluster.local:4000
 extraEnvVars:
   - name: OPENAI_API_KEY
     value: ref+envsubst://$LITELLM_MASTERKEY
+  - name: DEFAULT_USER_ROLE
+    value: ref+envsubst://$OPEN_WEBUI_DEFAULT_USER_ROLE
 
 databaseUrl: ref+k8s://v1/Secret/open-webui/openwebui-db-cluster-app/uri
 
